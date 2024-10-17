@@ -424,10 +424,10 @@ private:
 	BList fWindowList;
 };
 
-class TDockbertIcon : public TZoomableIcon
+class TDockbertIcon : public TTrackerIcon
 {
 public:
-	TDockbertIcon();
+	TDockbertIcon(entry_ref ref);
 	TDockbertIcon(BMessage *);
 
 	void _InitIcons();

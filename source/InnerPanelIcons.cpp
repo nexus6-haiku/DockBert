@@ -1670,14 +1670,14 @@ void TWorkspacesIcon::DrawIcon()
 	canvas->SetFont(&font);
 }
 
-TDockbertIcon::TDockbertIcon()
-	: TZoomableIcon()
+TDockbertIcon::TDockbertIcon(entry_ref ref)
+	: TTrackerIcon(ref)
 {
 	_InitIcons();
 }
 
 TDockbertIcon::TDockbertIcon( BMessage *message )
-	: TZoomableIcon( message )
+	: TTrackerIcon( message )
 {
 	_InitIcons();
 }
@@ -1709,11 +1709,7 @@ TAwarePopupMenu *TDockbertIcon::Menu()
 
 	menu->AddSeparatorItem();
 
-	entry_ref deskbarDirRef;
-	BPath path;
-	find_directory (B_SYSTEM_DESKBAR_DIRECTORY, &path);
-	get_ref_for_path(path.Path(), &deskbarDirRef);
-	TDockMenus::BuildTrackerMenu( menu, deskbarDirRef );
+	TDockMenus::BuildTrackerMenu( menu, fRef );
 
 	menu->AddSeparatorItem();
 
@@ -1721,8 +1717,8 @@ TAwarePopupMenu *TDockbertIcon::Menu()
 	menu->AddItem( new TBitmapMenuItem( B_TRANSLATE("Find" B_UTF8_ELLIPSIS), findIcon, new BMessage(kFindButton) ) );
 
 	// TODO: disable until the original preferences panel is reintroduced
-	// BBitmap *prefsIcon = nullptr;
-	// menu->AddItem( new TBitmapMenuItem( B_TRANSLATE("Dockbert Preferences" B_UTF8_ELLIPSIS), prefsIcon, new BMessage(kDockbertPreferences) ) );
+	BBitmap *prefsIcon = nullptr;
+	menu->AddItem( new TBitmapMenuItem( B_TRANSLATE("Dockbert Preferences" B_UTF8_ELLIPSIS), prefsIcon, new BMessage(kDockbertPreferences) ) );
 
 	entry_ref aboutRef;
 	BBitmap *aboutIcon = nullptr;
@@ -1748,9 +1744,9 @@ void TDockbertIcon::MessageReceived( BMessage *message )
 	case kFindButton:
 		BMessenger(kTrackerSignature).SendMessage(message);
 		break;
-//	case kDeskbarPreferences:
-//		be_roster->Launch( "application/x-vnd.Deskbar-Preferences" );
-//		break;
+	// case kDeskbarPreferences:
+		// be_roster->Launch( "application/x-vnd.Haiku-DeskbarPreferences" );
+		// break;
 	case kRebootSystem:
 	case kShutdownSystem:
 		{
@@ -1767,7 +1763,7 @@ void TDockbertIcon::MessageReceived( BMessage *message )
 			break;
 		}
 	default:
-		TZoomableIcon::MessageReceived(message);
+		TTrackerIcon::MessageReceived(message);
 	}
 }
 
@@ -1778,7 +1774,7 @@ void TDockbertIcon::MouseDown( BPoint point, uint32 modifiers, uint32 buttons )
 		DoMenu();
 	}
 	else
-		TZoomableIcon::MouseDown( point, modifiers, buttons );
+		TTrackerIcon::MouseDown( point, modifiers, buttons );
 }
 
 TSeparatorIcon::TSeparatorIcon()

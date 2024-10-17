@@ -34,7 +34,7 @@ APP_MIME_SIG = x-vnd.Dockbert
 SRCS= 	Bubble.cpp DockArchivableUtils.cpp InnerPanel.cpp \
 		InnerPanelIcons.cpp main.cpp NMenu.cpp PanelWindow.cpp \
 		PanelWindowView.cpp ResourceSet.cpp TrackerMenus.cpp \
-		PreferencesWindow.cpp Utils.cpp
+		PreferencesWindow.cpp Preferences.cpp Utils.cpp
 
 #	specify the resource definition files to use
 #	full path or a relative path to the resource file can be used.
@@ -73,7 +73,7 @@ LIBPATHS=
 #	additional paths to look for system headers
 #	thes use the form: #include <header>
 #	source file directories are NOT auto-included here
-SYSTEM_INCLUDE_PATHS =
+SYSTEM_INCLUDE_PATHS = $(shell findpaths -e B_FIND_PATH_HEADERS_DIRECTORY private/interface)
 
 #	additional paths to look for local headers
 #	thes use the form: #include "header"

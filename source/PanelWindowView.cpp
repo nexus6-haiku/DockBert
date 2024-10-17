@@ -252,7 +252,7 @@ void TPanelWindowView::AttachedToWindow()
 		cpanel = new TShortcutPanel(this);
 		AddPanel( cpanel );
 		AddShortcut( cpanel, "application/x-vnd.Haiku-WebPositive" );
-		AddShortcut( cpanel, "application/x-vnd.Sugoi-BeShare" );
+		// AddShortcut( cpanel, "application/x-vnd.Sugoi-BeShare" );
 
 		fRunningAppPanel = new TApplicationPanel(this);
 		AddPanel( fRunningAppPanel );
