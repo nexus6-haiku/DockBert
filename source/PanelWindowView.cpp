@@ -258,7 +258,7 @@ void TPanelWindowView::AttachedToWindow()
 		AddPanel( fRunningAppPanel );
 	}
 
-//	AddPanel( new TReplicantShelfPanel(this) );
+	// AddPanel( new TReplicantShelfPanel(this) );
 }
 
 // old interface
@@ -1195,9 +1195,9 @@ void TPanelWindowView::HandleDroppedMessage( BMessage *message, BPoint point )
 					pn->AddItem( new TShowDesktopIcon(), index );
 				else if ( string == "!experimental!replicant_tab" )
 				{
-// todo: Fix this and the header thingo
-//					AddPanel( new TReplicantShelfPanel(this) );
-//					ChangedSize(0);
+					// todo: Fix this and the header thingo
+					// AddPanel( new TReplicantShelfPanel(this) );
+					// ChangedSize(0);
 				}
 				else if ( !strcasecmp( string.String(), "beos") )
 				{

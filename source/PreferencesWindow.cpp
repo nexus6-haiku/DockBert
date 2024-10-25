@@ -6,6 +6,9 @@
 
 #include "PreferencesWindow.h"
 
+#include <cstdio>
+
+#include <Application.h>
 #include <Catalog.h>
 #include <CheckBox.h>
 #include <GroupLayout.h>
@@ -24,10 +27,12 @@ PreferencesWindow::PreferencesWindow(BRect frame, BView* mainView)
 		B_ASYNCHRONOUS_CONTROLS | B_NOT_RESIZABLE | B_NOT_ZOOMABLE | B_AUTO_UPDATE_SIZE_LIMITS | B_CLOSE_ON_ESCAPE),
 	fLoadSettings(true),
 	fPreferences(new Preferences(mainView)),
-	fMessageRunner(nullptr)
+	fMessageRunner(nullptr),
+	fMainWindow(mainView->Window())
 {
 	_InitControls();
 	CenterOnScreen();
+	fMainWindow->Lock();
 }
 
 
@@ -128,10 +133,10 @@ PreferencesWindow::MessageReceived(BMessage* message)
 void
 PreferencesWindow::WindowActivated(bool active)
 {
-	if (fLoadSettings) {
+	// if (fLoadSettings) {
 		_LoadSettings();
-		fLoadSettings = false;
-	}
+		// fLoadSettings = false;
+	// }
 
 	if (!active && IsHidden())
 		PostMessage(B_QUIT_REQUESTED);
@@ -142,8 +147,11 @@ PreferencesWindow::WindowActivated(bool active)
 bool
 PreferencesWindow::QuitRequested()
 {
-	if (!IsHidden())
+	if (!IsHidden()) {
 		Hide();
+		if (fMainWindow->IsLocked())
+			fMainWindow->Unlock();
+	}
 	return false;
 }
 
@@ -194,6 +202,9 @@ PreferencesWindow::_InitControls()
 	// Tabs settings
 	fTabListView = new BListView("TabListView");
 	fTabListView->SetSelectionMessage(new BMessage(kMsgSelectTab));
+	fScrollListView = new BScrollView("ScrollListView", fTabListView, B_FRAME_EVENTS | B_WILL_DRAW,
+		true, true, B_FANCY_BORDER);
+
 	fAddTabButton = new BButton(B_TRANSLATE("Add"), new BMessage(kMsgAddTab));
 	fRemoveTabButton = new BButton(B_TRANSLATE("Remove"), new BMessage(kMsgAddTab));
 	fRemoveTabButton->SetEnabled(false);
@@ -211,7 +222,7 @@ PreferencesWindow::_InitControls()
 		.AddGroup(B_VERTICAL, 5)
 			.SetInsets(B_USE_WINDOW_SPACING)
 			.AddGroup(B_VERTICAL)
-				.Add(fTabListView)
+				.Add(fScrollListView)
 				.End()
 			.AddGroup(B_HORIZONTAL)
 				.SetExplicitAlignment(BAlignment(B_ALIGN_RIGHT, B_ALIGN_VERTICAL_UNSET))
@@ -252,6 +263,9 @@ PreferencesWindow::_LoadSettings()
 
 	// tabs
 	int32 countTabs = fPreferences->CountProperties("tabs");
+	printf("items to remove: %d", fTabListView->CountItems());
+	fTabListView->RemoveItems(0, fTabListView->CountItems());
+	printf("items: %d", fTabListView->CountItems());
 	for (int i = 0; i < countTabs; i++) {
 		BString name;
 		name = fPreferences->GetTabProperty(i, "Name", name);

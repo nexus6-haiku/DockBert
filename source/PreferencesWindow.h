@@ -15,6 +15,7 @@
 #include <ListView.h>
 #include <RadioButton.h>
 #include <Spinner.h>
+#include <ScrollView.h>
 #include <StringView.h>
 #include <TabView.h>
 #include <TextControl.h>
@@ -61,6 +62,7 @@ private:
 	BSpinner*			fHideEffectDelayControl;
 
 	BListView*			fTabListView;
+	BScrollView* 		fScrollListView;
 	BButton*			fAddTabButton;
 	BButton*			fRemoveTabButton;
 	BColorControl*		fTabColorControl;
@@ -71,4 +73,6 @@ private:
 	BTabView*			fTabView;
 
 	BMessageRunner*		fMessageRunner;
+
+	BWindow*			fMainWindow;
 };

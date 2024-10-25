@@ -98,7 +98,7 @@ friend class TPanelWindowView;
 	bool InitTimer();
 	bool StopTimer();
 	void SetTimerInterval( bigtime_t );
-	
+
 	TPanelWindowView *fParent;
 	BRect fFrame;
 	BRect fFrameFrame;
