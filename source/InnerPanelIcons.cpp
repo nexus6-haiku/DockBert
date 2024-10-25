@@ -1201,9 +1201,9 @@ void TClockIcon::DrawTime()
 
 	fCurrentTime = time(NULL);
 
-	canvas->SetHighColor( 0, 0, 0 );
-	canvas->SetLowColor( fParent->FrameColor() );
-	struct tm *_time = localtime( &fCurrentTime );
+	canvas->SetHighColor(ui_color(B_CONTROL_TEXT_COLOR));
+	canvas->SetLowColor(fParent->FrameColor());
+	struct tm *_time = localtime(&fCurrentTime);
 	char what[64];
 
 	const char *str;
